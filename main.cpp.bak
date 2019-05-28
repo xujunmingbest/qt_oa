@@ -1,0 +1,36 @@
+#include "mainwindow.h"
+#include <QApplication>
+#include "login.h"
+#include <QTextCodec>
+#include "mysqloperate.h"
+
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("gbk"));
+
+    MysqlOperate::MysqlOpen();
+    S_AddLiuShuiZhang st;
+    st.BeiZhu = "这是备注";
+    st.bookKeeper = "徐军明";
+    st.chargeName = "xxx";
+    st.date = "2018/10/5";
+    st.KuangXiangName = "款项名称";
+st.KuangXiangType = "收入";
+st.money = 6000.00;
+st.moneyRemain = 12000.00;
+st.Status = "待确认";
+
+    MysqlOperate::AddLiuShuiZhang(st);
+
+
+    MainWindow w;
+    login l;
+    l.exec();
+    if(login::LoginSuccess){
+        w.show();
+        w.showMaximized();
+    }
+    return a.exec();
+}

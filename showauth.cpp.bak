@@ -1,0 +1,24 @@
+#include "showauth.h"
+#include "ui_showauth.h"
+#include <QTableView>
+#include <QStandardItemModel>
+#include <QTextCodec>
+
+ShowAuth::ShowAuth(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::ShowAuth)
+{
+    ui->setupUi(this);
+    QStandardItemModel  *model = new QStandardItemModel();
+
+    model->setColumnCount(2);
+    QTextCodec::setCodecForLocale(QTextCodec::codecForName("utf8"));
+    model->setHeaderData(0,Qt::Horizontal,"-模块名-");
+    model->setHeaderData(1,Qt::Horizontal,"-可读可写-");
+    ui->tableView->setModel(model);
+}
+
+ShowAuth::~ShowAuth()
+{
+    delete ui;
+}

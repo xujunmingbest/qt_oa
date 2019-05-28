@@ -1,0 +1,24 @@
+#include "xiugaimima.h"
+#include "ui_xiugaimima.h"
+
+XiuGaiMiMa::XiuGaiMiMa(QWidget *parent) :
+    QWidget(parent),
+    ui(new Ui::XiuGaiMiMa)
+{
+    ui->setupUi(this);
+}
+
+XiuGaiMiMa::~XiuGaiMiMa()
+{
+    delete ui;
+}
+#include <QMessageBox>
+void XiuGaiMiMa::ButtonClick(){
+    if(  ui->lineEdit->text() == "")
+         QMessageBox::about(NULL, "错误提示", "密码不能为空");
+    if(ui->lineEdit->text() != ui->lineEdit_2->text()  )
+        QMessageBox::about(NULL, "错误提示", "密码不一致");
+
+
+
+}

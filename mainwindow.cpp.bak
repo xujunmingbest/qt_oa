@@ -1,0 +1,84 @@
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+#include <QMdiArea.h>
+#include <QMdiSubWindow.h>
+
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+
+    mdiArea = new QMdiArea(this);
+    this->setCentralWidget(mdiArea);
+
+    {
+        QMenu* Q =  ui->AuthMenu;
+        {
+            QAction* action = Q->addAction("查看权限");
+            connect(action, SIGNAL(triggered()), this, SLOT(AuthShow()));
+        }
+    }
+
+    {//流水账管理
+        QMenu* Q =  ui->menuLiuShuiZhang;
+        {
+            QAction* action = Q->addAction(" 添加流水账 ");
+            connect(action, SIGNAL(triggered()), this, SLOT(_TianJiaLiuShuiZhang()));
+        }
+    }
+
+    {
+       // QToolBar* pToolBar = ui->mainToolBar;
+       //
+       // //QAction* pActionC = new QAction(QIcon(QPixmap(":/img/1.png")), "QZHER");
+       // QAction* pActionC = new QAction("查看权限");
+       // pToolBar->addAction(pActionC);
+       //
+       // //QObject::connect(pActionC, SIGNAL(triggered(bool)), this, SLOT(caozuo3()));
+    }
+
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+#include "showauth.h"
+
+void MainWindow::AuthShow(){
+    QMdiSubWindow *wnd =IssubWindowOpened("showAuth");
+    if( wnd == Q_NULLPTR){
+        //mdiarea添加窗体
+        ShowAuth *c1 = new ShowAuth;
+        mdiArea->addSubWindow(c1);
+        c1->setWindowState(Qt::WindowMaximized);
+        c1->setWindowTitle("showAuth");
+    }
+
+}
+#include "tianjialiushuizhang.h"
+void MainWindow::_TianJiaLiuShuiZhang(){
+    QMdiSubWindow *wnd =IssubWindowOpened("TianJiaLiuShuiZhang");
+    if( wnd == Q_NULLPTR){
+        //mdiarea添加窗体
+        TianJiaLiuShuiZhang *c1 = new TianJiaLiuShuiZhang;
+        mdiArea->addSubWindow(c1);
+        c1->setWindowState(Qt::WindowMaximized);
+        c1->setWindowTitle("TianJiaLiuShuiZhang");
+    }
+}
+
+QMdiSubWindow * MainWindow::IssubWindowOpened(QString title){
+
+    foreach (QMdiSubWindow *window, mdiArea->subWindowList())
+    {
+        if ( window->windowTitle() == title)
+        {   //如果已经打开过，则获得焦点
+            window->showMaximized();
+            return window;
+        }
+    }
+    return Q_NULLPTR;
+}
